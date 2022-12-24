@@ -1,0 +1,7 @@
+{
+  "name": "@ubet-pro/rest-api",
+  "private": true,
+  "scripts": {
+    "artisan": "php artisan"
+  }
+}

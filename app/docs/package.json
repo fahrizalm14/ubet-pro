@@ -1,0 +1,18 @@
+{
+  "name": "@ubet-pro/docs",
+  "version": "0.0.0",
+  "description": "",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@vuepress/plugin-docsearch": "^2.0.0-beta.59",
+    "@vuepress/plugin-search": "^2.0.0-beta.59",
+    "vuepress": "^2.0.0-beta.59"
+  }
+}

@@ -1,0 +1,5 @@
+# Independent code styling
+node_modules
+**/node_modules
+**/dist
+app
