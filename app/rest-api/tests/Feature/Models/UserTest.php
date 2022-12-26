@@ -19,6 +19,6 @@ class UserTest extends TestCase
 
     public function test_user_can_be_created()
     {
-        $this->assertDatabaseCount('users', 5);
+        $this->assertDatabaseCount('users', 2);
     }
 }
