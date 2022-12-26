@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\ColumnType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ColumnTypeSeeder extends Seeder
@@ -34,8 +33,13 @@ class ColumnTypeSeeder extends Seeder
             ]
         ];
 
-        foreach ($columns as $column) {
-            ColumnType::create($column);
+        // avoid unique name column
+        if (ColumnType::count() < 5) {
+            foreach ($columns as $column) {
+                ColumnType::create($column);
+            }
         }
+
+
     }
 }

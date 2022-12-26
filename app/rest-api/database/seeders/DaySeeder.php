@@ -39,8 +39,11 @@ class DaySeeder extends Seeder
             ],
         ];
 
-        foreach ($days as $day) {
-            Day::create($day);
+        // avoid unique name day
+        if (Day::count() < 7) {
+            foreach ($days as $day) {
+                Day::create($day);
+            }
         }
     }
 }
