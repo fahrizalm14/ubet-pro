@@ -196,6 +196,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ProjectServiceProvider::class,
         App\Providers\UserServiceProvider::class,
+        App\Providers\ScheduleServiceProvider::class,
 
     ],
 
