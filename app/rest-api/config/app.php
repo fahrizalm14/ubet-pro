@@ -197,6 +197,7 @@ return [
         App\Providers\ProjectServiceProvider::class,
         App\Providers\UserServiceProvider::class,
         App\Providers\ScheduleServiceProvider::class,
+        App\Providers\DatabaseDiagramProvider::class,
 
     ],
 
