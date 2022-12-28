@@ -19,4 +19,9 @@ class Schedule extends Model
         "end_time",
         "is_done"
     ];
+
+    public function day()
+    {
+        return $this->belongsTo(Day::class);
+    }
 }
