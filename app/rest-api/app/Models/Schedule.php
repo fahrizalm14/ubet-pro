@@ -12,7 +12,7 @@ class Schedule extends Model
     use Uuids;
 
     protected $fillable = [
-        "title",
+        // "title",
         "project_id",
         "day_id",
         "start_time",

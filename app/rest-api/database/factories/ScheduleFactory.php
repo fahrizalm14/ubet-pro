@@ -19,7 +19,7 @@ class ScheduleFactory extends Factory
     public function definition()
     {
         return [
-            "title" => $this->faker->title(),
+            // "title" => $this->faker->title(),
             "project_id" => Project::inRandomOrder()->first()->id,
             "day_id" => Day::inRandomOrder()->first()->id,
             "start_time" => $this->faker->randomNumber(2),
