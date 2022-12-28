@@ -14,7 +14,7 @@ class TableColumn extends Model
     protected $fillable = [
         "name",
         "length",
-        "table_id",
+        "project_table_id",
         "column_type_id",
         "is_primary",
         "alias"

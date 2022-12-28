@@ -12,6 +12,13 @@ class ProjectTable extends Model
     use HasFactory;
 
     protected $fillable = [
-        "project_id","name"
+        "project_id", "name"
     ];
+
+    protected $hidden = ["created_at", "updated_at"];
+
+    public function tableColumn()
+    {
+        return $this->hasMany(TableColumn::class);
+    }
 }

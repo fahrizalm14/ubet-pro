@@ -21,7 +21,7 @@ class TableColumnFactory extends Factory
         return [
             "name" => $this->faker->monthName(),
             "length" => $this->faker->randomNumber(3),
-            "table_id" => ProjectTable::inRandomOrder()->first()->id,
+            "project_table_id" => ProjectTable::inRandomOrder()->first()->id,
             "column_type_id" => ColumnType::inRandomOrder()->first()->id,
             "is_primary" => $this->faker->boolean(),
             "alias" => $this->faker->lastName()
