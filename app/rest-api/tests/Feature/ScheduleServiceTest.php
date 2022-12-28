@@ -54,8 +54,6 @@ class ScheduleServiceTest extends TestCase
         $this->assertDatabaseHas("schedules", $data);
     }
 
-    // todo add fail creating project
-
     public function test_success_delete_by_id()
     {
         $id = Schedule::inRandomOrder()->first()->id;

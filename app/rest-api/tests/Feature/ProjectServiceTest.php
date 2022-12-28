@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Exceptions\ClientException;
 use App\Models\Project;
 use App\Models\User;
 use App\Services\Interfaces\ProjectService;
@@ -27,6 +28,7 @@ class ProjectServiceTest extends TestCase
         $projectService = $this->app->make(ProjectService::class);
         $this->assertSame(20, count($projectService->getAll()));
         $this->assertIsArray($projectService->getAll());
+        // dump($projectService->getAll());
     }
 
     public function test_success_create()
@@ -42,6 +44,8 @@ class ProjectServiceTest extends TestCase
 
         $this->assertDatabaseHas("projects", $data);
     }
+
+    // todo add fail creating project
 
     public function test_success_find_by_id()
     {
@@ -93,6 +97,7 @@ class ProjectServiceTest extends TestCase
         try {
             $projectService->deleteById($id);
         } catch (Exception $e) {
+            $this->assertTrue($e instanceof ClientException);
             $this->assertSame("Project not found", $e->getMessage());
             $this->assertSame(404, $e->getCode());
             $isError = true;
