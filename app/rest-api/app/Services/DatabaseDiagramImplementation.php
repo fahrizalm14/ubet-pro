@@ -45,8 +45,8 @@ class DatabaseDiagramImplementation implements DatabaseDiagramService
     {
         $_projectTable =
             $this->projectTable
-            ->where("project_id", $projectId)
-            ->get();
+                ->where("project_id", $projectId)
+                ->get();
 
         return $_projectTable->toArray();
     }
@@ -55,10 +55,10 @@ class DatabaseDiagramImplementation implements DatabaseDiagramService
     {
         $_projectTable =
             $this->projectTable
-            ->with('tableColumn')
-            ->where('id', $id)
-            ->get()
-            ->toArray();
+                ->with('tableColumn')
+                ->where('id', $id)
+                ->get()
+                ->toArray();
 
         return $_projectTable;
     }
@@ -73,8 +73,8 @@ class DatabaseDiagramImplementation implements DatabaseDiagramService
     {
         return
             $this
-            ->checkProjectTable($id)
-            ->update($data);
+                ->checkProjectTable($id)
+                ->update($data);
     }
 
     public function deleteProjectTable(string $id): bool
@@ -99,8 +99,8 @@ class DatabaseDiagramImplementation implements DatabaseDiagramService
     {
         return
             $this
-            ->checkTableColumn($id)
-            ->update($data);
+                ->checkTableColumn($id)
+                ->update($data);
     }
 
     public function deleteTableColumn(string $columnId): bool
@@ -108,16 +108,14 @@ class DatabaseDiagramImplementation implements DatabaseDiagramService
         return $this
             ->checkTableColumn($columnId)
             ->delete();
-
-        return true;
     }
 
     public function getAllColumnTypes(): array
     {
         return
             $this
-            ->columnType
-            ->get()
-            ->toArray();
+                ->columnType
+                ->get()
+                ->toArray();
     }
 }
