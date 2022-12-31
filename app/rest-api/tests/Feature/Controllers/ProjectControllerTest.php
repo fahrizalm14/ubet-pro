@@ -27,7 +27,7 @@ class ProjectControllerTest extends ControllerTest
         // dump($response);
     }
 
-    public function test_success_project_find_by_id()
+    public function test_success_find_project_by_id()
     {
         $id = Project::inRandomOrder()->first()->id;
 
