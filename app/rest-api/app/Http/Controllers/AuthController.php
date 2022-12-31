@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ClientException;
+use App\Exceptions\UnauthenticatedException;
 use App\Models\User;
+// use App\Services\Interfaces\UserService;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
+    // private UserService $userService;
+    // public function __construct(UserService $userService)
+    // {
+    //     $this->userService = $userService;
+    // }
     public function register(Request $request)
     {
         try {
@@ -19,32 +25,30 @@ class AuthController extends Controller
                 !$request["username"] ||
                 !$request["password"]
             ) {
-                return response()->json([
-                    'success' => false,
-                    'message' => "field tidak boleh kosong!",
-
-                ], 400);
+                throw new ClientException("Field tidak boleh kosong.");
+            }
+            $user = [];
+            try {
+                $user = User::create([
+                    'full_name' => $request["fullName"],
+                    'username' => $request["username"],
+                    'password' => Hash::make($request["password"]),
+                ]);
+            } catch (Exception $e) {
+                throw new ClientException("Username tidak tersedia.");
             }
 
-            $user =  User::create([
-                'full_name' => $request["fullName"],
-                'username' => $request["username"],
-                'password' => Hash::make($request["password"]),
-            ]);
 
             $cookie = cookie('user_id', $user["id"], 6000 * 24);
 
-            return response()->json([
-                'success' => true,
-                'message' => "Registrasi berhasil!",
-
-            ], 201)->withCookie($cookie);
+            return $this
+                ->renderSuccess("Registrasi berhasil.", [], 201)
+                ->cookie($cookie);
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => "Internal Server Error",
 
-            ], 500);
+            return $this
+                ->renderError($e)
+                ->cookie(cookie()->forget("user_id"));
         }
     }
 
@@ -52,12 +56,9 @@ class AuthController extends Controller
     {
         try {
             if (!$request['username'] || !$request['password']) {
-                return response()->json([
-                    'success' => false,
-                    'message' => "Email atau password tidak boleh kosong!",
-
-                ], 400);
-            };
+                throw new ClientException();
+            }
+            ;
             $user = User::where("username", $request['username'])->first();
 
             if (
@@ -67,26 +68,31 @@ class AuthController extends Controller
                     $user["password"]
                 )
             ) {
-                return response()->json([
-                    'success' => false,
-                    'message' => "Email atau password salah!",
-
-                ], 401);
+                throw new UnauthenticatedException();
             }
 
             $cookie = cookie('user_id', $user["id"], 6000 * 24);
 
-            return response()->json([
-                'success' => true,
-                'message' => "Login berhasil!",
-
-            ], 200)->withCookie($cookie);
+            return $this
+                ->renderSuccess("Login berhasil.", [], 200)
+                ->cookie($cookie);
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => "Internal Server Error",
+            return $this
+                ->renderError($e)
+                ->cookie(cookie()->forget("user_id"));
+        }
+    }
 
-            ], 500);
+    public function logout(Request $request)
+    {
+        try {
+            return $this
+                ->renderSuccess("Logout berhasil.", [], 200)
+                ->withoutCookie($request->cookie("user_id"));
+        } catch (Exception $e) {
+            return $this
+                ->renderError($e)
+                ->withoutCookie($this->cookie("user_id"));
         }
     }
 }
