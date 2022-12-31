@@ -41,7 +41,9 @@ class ProjectController extends Controller
     public function create(Request $r): JsonResponse
     {
         try {
-            $data = $this->projectService->create($r->input());
+            $newData = $r->input();
+            $newData["user_id"] = $this->parseCookie($r->cookie("user_id"));
+            $data = $this->projectService->create($newData);
             return $this
                 ->renderSuccess("Berhasil menambah proyek.", $data, 201);
         } catch (Exception $e) {

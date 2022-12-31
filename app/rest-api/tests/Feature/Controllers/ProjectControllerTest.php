@@ -5,27 +5,11 @@ namespace Tests\Feature\Controllers;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Testing\TestResponse;
-use Tests\TestCase;
 
-class ProjectControllerTest extends TestCase
+class ProjectControllerTest extends ControllerTest
 {
     use RefreshDatabase;
     protected $seed = true;
-
-    private function _response(TestResponse $response)
-    {
-
-        $this->assertArrayHasKey("success", $response);
-        $this->assertArrayHasKey("message", $response);
-    }
-
-    private function _response_withData(TestResponse $response)
-    {
-
-        $this->_response($response);
-        $this->assertArrayHasKey("data", $response);
-    }
 
     public function test_success_get_all_projects()
     {
@@ -61,7 +45,6 @@ class ProjectControllerTest extends TestCase
         $data = [
             "name" => "StasiunFileXXXXXAdadadafasf",
             "description" => "Contoh desAFASFASFASFASFScription",
-            "user_id" => $id
         ];
         $response = $this->withCookie(
             "user_id",
