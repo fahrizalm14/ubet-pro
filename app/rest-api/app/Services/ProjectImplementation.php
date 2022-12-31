@@ -40,6 +40,15 @@ class ProjectImplementation implements ProjectService
         return $this->project->get()->toArray();
     }
 
+    public function getAllByUserId(string $userId): array
+    {
+        return $this
+            ->project
+            ->where('user_id', $userId)
+            ->get()
+            ->toArray();
+    }
+
     public function create(array $data): array
     {
         $_project = $this->project->create($data);

@@ -108,7 +108,7 @@ class ProjectServiceTest extends TestCase
 
     public function test_success_update_by_id()
     {
-        $id =  Project::inRandomOrder()->first()->id;
+        $id = Project::inRandomOrder()->first()->id;
         $projectService = $this->app->make(ProjectService::class);
         $projectService->updateById($id, [
             "name" => "Siapos App",
@@ -123,7 +123,7 @@ class ProjectServiceTest extends TestCase
 
     public function test_fail_update_by_id()
     {
-        $id =  "f301ab93-1622-4702-853f-278493361600";
+        $id = "f301ab93-1622-4702-853f-278493361600";
         $isError = false;
         $projectService = $this->app->make(ProjectService::class);
         try {
@@ -137,5 +137,14 @@ class ProjectServiceTest extends TestCase
         $this->assertDatabaseMissing('projects', ["name" => "Siapos App"]);
 
         $this->assertTrue($isError);
+    }
+
+    public function test_get_all_by_user_id()
+    {
+        $userId = User::inRandomOrder()->first()->id;
+        $projectService =
+            $this->app->make(ProjectService::class);
+        $projects = $projectService->getAllByUserId($userId);
+        $this->assertSame($userId, $projects[0]["user_id"]);
     }
 }
