@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 class NotFoundException extends ClientException
 {
-    public function __construct(string $message = "Not found", int $code = 400)
+    public function __construct(string $message = "Not found")
     {
         parent::__construct($message, 404);
         $this->name = "NotFoundException";

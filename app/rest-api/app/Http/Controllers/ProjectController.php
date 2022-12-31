@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
+use App\Services\Interfaces\ProjectService;
+use App\Services\Interfaces\UserService;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -12,74 +15,86 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    private ProjectService $projectService;
+    public function __construct(ProjectService $projectService)
     {
-        //
+        $this->projectService = $projectService;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * getAllController
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function create()
+    public function getAll(): JsonResponse
     {
-        //
+        try {
+            $data = $this->projectService->getAll();
+
+            return $this
+                ->renderSuccess("Berhasil mengambil data proyek.", $data, 200);
+        } catch (Exception $e) {
+            return $this->renderError($e);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function getAllByUserId(Request $r): JsonResponse
     {
-        //
+        try {
+            $userId = $this->parseCookie($r->cookie("user_id"));
+            $data = $this->userService->getProjects($userId);
+
+            return $this
+                ->renderSuccess("Berhasil mengambil data proyek.", $data, 200);
+        } catch (Exception $e) {
+            return $this->renderError($e);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Project $project)
+    public function create(Request $r): JsonResponse
     {
-        //
+        try {
+            $newData = $r->input();
+            $newData["user_id"] = $this->parseCookie($r->cookie("user_id"));
+            $data = $this->projectService->create($newData);
+            return $this
+                ->renderSuccess("Berhasil menambah proyek.", $data, 201);
+        } catch (Exception $e) {
+            return $this->renderError($e);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Project $project)
+    public function findById(string $projectId): JsonResponse
     {
-        //
+        try {
+            $data = $this->projectService->findById($projectId);
+            return $this
+                ->renderSuccess("Berhasil mengambil proyek " . $data["name"], $data, 200);
+        } catch (Exception $e) {
+            return $this->renderError($e);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Project $project)
+
+    public function update(Request $r, string $projectId): JsonResponse
     {
-        //
+        try {
+            $this->projectService->updateById($projectId, $r->input());
+            return $this
+                ->renderSuccess("Berhasil mengubah proyek " . $projectId, [], 200);
+        } catch (Exception $e) {
+            return $this->renderError($e);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Project $project)
+    public function delete(string $projectId): JsonResponse
     {
-        //
+        try {
+            $this->projectService->deleteById($projectId);
+            return $this
+                ->renderSuccess("Berhasil menghapus proyek " . $projectId, [], 200);
+        } catch (Exception $e) {
+            return $this->renderError($e);
+        }
     }
 }
