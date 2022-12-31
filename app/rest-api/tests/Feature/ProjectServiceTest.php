@@ -139,12 +139,13 @@ class ProjectServiceTest extends TestCase
         $this->assertTrue($isError);
     }
 
-    public function test_get_all_by_user_id()
-    {
-        $userId = User::inRandomOrder()->first()->id;
-        $projectService =
-            $this->app->make(ProjectService::class);
-        $projects = $projectService->getAllByUserId($userId);
-        $this->assertSame($userId, $projects[0]["user_id"]);
-    }
+// public function test_get_all_by_user_id()
+// {
+//     $userId = User::inRandomOrder()->first()->id;
+//     $projectService =
+//         $this->app->make(ProjectService::class);
+//     $projects = $projectService->getAllByUserId($userId);
+//     $this->assertSame($userId, $projects[0]["user_id"]);
+//     dump($projects);
+// }
 }

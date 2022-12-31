@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\Interfaces\ProjectService;
+use App\Services\Interfaces\UserService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -25,11 +26,23 @@ class ProjectController extends Controller
      *
      * @return JsonResponse
      */
-    public function getAll(Request $r): JsonResponse
+    public function getAll(): JsonResponse
+    {
+        try {
+            $data = $this->projectService->getAll();
+
+            return $this
+                ->renderSuccess("Berhasil mengambil data proyek.", $data, 200);
+        } catch (Exception $e) {
+            return $this->renderError($e);
+        }
+    }
+
+    public function getAllByUserId(Request $r): JsonResponse
     {
         try {
             $userId = $this->parseCookie($r->cookie("user_id"));
-            $data = $this->projectService->getAllByUserId($userId);
+            $data = $this->userService->getProjects($userId);
 
             return $this
                 ->renderSuccess("Berhasil mengambil data proyek.", $data, 200);
