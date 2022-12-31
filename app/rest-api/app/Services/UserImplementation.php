@@ -20,10 +20,10 @@ class UserImplementation implements UserService
     {
         $_user =
             $this->user
-            ->with("project")
-            ->where("id", $id)
-            ->get()
-            ->first();
+                ->with("project")
+                ->where("id", $id)
+                ->get()
+                ->first();
         if ($_user === null) {
             return [];
         }
@@ -37,21 +37,20 @@ class UserImplementation implements UserService
         if (sizeof($projects) > 0) {
             $arr = collect($projects["project"])->map(function ($v, $k) {
                 $idProject = $v["id"];
-                $d =  collect(Schedule::select()
+                $d = collect(Schedule::select()
                     ->with("day")
                     ->where("project_id", $idProject)
                     ->get()
                     ->toArray())->map(function ($x, $y) {
-                    $day = $x['day']['name'];
-                    $x["day"] = $day;
-                    return $x;
-                });
+                        $day = $x['day']['name'];
+                        $x["day"] = $day;
+                        return $x;
+                    }
+                    );
                 return $d;
             });
             $schedules = $arr->flatten(1)->groupBy("day")->toArray();
         }
-
-
         return $schedules;
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DatabaseDiagramController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,14 @@ Route::middleware("auth.middle")
         Route::get('/{projectId}', 'findById');
         Route::put('/{projectId}', 'update');
         Route::delete('/{projectId}', 'delete');
+    });
+
+Route::middleware("auth.middle")
+    ->controller(UserController::class)
+    ->prefix('users')
+    ->group(function () {
+        Route::get('/schedules', 'getProjects');
+        Route::get('/projects', 'getSchedules');
     });
 
 Route::middleware("auth.middle")
